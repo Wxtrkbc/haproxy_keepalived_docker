@@ -1,0 +1,16 @@
+---
+# tasks file for build_images
+
+ - name: Get app project
+   git:
+      repo: {{ project_git_url }}
+      dest: {{ project_file_dir }}
+      refspec: '+refs/pull/*:refs/heads/*'
+
+ - name: Build app images
+   docker_images:
+     name: app
+     path: {{ project_file_dir }}
+     force: True
+
+

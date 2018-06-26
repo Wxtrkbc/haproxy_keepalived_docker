@@ -1,0 +1,4 @@
+---
+# defaults file for build_images
+project_git_url: git@github.com:Wxtrkbc/test_ha.git
+project_file_dir: /src/app
