@@ -1,6 +1,7 @@
 ---
 - hosts: docker
   sudo: True
+  gather_facts: False
   tasks:
     - name: Install required packages
       yum: name={{ item }} state=present
@@ -20,3 +21,11 @@
         name: docker
         state: started
         enabled: yes
+
+    - name: Download the latest version of Docker Compose
+      get_url:
+        url: "{{ docker_compose_url }}"
+        dest: /usr/local/bin/docker-compose
+
+    - name: Apply executable permissions to the binary
+      command: chmod +x /usr/local/bin/docker-compose

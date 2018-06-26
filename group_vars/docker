@@ -1,2 +1,5 @@
 ---
 docker_stable_repository: https://download.docker.com/linux/centos/docker-ce.repo
+uname_os: linux
+uname_bit: x86_64
+docker_compose_url: "https://github.com/docker/compose/releases/download/1.21.2/docker-compose-{{ uname_os}}-{{ uname_bit }}"
