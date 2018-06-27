@@ -1,0 +1,8 @@
+---
+# tasks file for deploy
+ - name: Run app containers
+   import_tasks: deploy_app.yml
+   when: inventory_hostname in groups['app']
+
+ - name: Deploy ha and keepalived container
+   import_tasks: deploy_ha.yml

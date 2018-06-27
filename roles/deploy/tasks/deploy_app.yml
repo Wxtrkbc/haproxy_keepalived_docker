@@ -1,0 +1,11 @@
+---
+
+  - name: Gengerate app docker-compose file
+    template:
+      src: docker-compose.yml.j2
+      dest: "{{ app_docker_compose_dir }}/docker-compose.yml"
+
+  - name: Start app containers
+    command: docker-compose up -d
+    args:
+      chdir: "{{ app_docker_compose_dir }}"

@@ -1,0 +1,5 @@
+---
+# defaults file for deploy
+app_image_name: app
+app_container_prefix_name: "{{ app_image_name }}"
+app_docker_compose_dir: /src/app

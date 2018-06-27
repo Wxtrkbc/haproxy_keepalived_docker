@@ -1,4 +1,4 @@
 ---
 - hosts: app
   roles:
-    - build
+    - build_images

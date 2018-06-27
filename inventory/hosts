@@ -3,7 +3,7 @@
 140.143.152.176
 
 
-[proxy_keepalived]
+[haproxy_keepalived]
 149.28.239.218
 140.143.152.176
 

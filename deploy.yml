@@ -1,0 +1,4 @@
+---
+- hosts: haproxy_keepalived
+  roles:
+    - deploy
