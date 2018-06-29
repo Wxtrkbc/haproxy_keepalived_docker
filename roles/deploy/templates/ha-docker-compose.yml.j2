@@ -1,0 +1,15 @@
+version: '3.3'
+
+services:
+  ha1:
+    image: haproxy
+    container_name: "{{ haproxy_container_name }}"
+    ports:
+      - "8080:80"
+      - "1984:1984"
+    volumes:
+      - type: bind
+        source: "{{ ha_config_dir }}/haproxy.cfg"
+        target: /usr/local/etc/haproxy/haproxy.cfg
+    network_mode: host
+

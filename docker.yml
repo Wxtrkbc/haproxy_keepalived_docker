@@ -9,6 +9,7 @@
        - yum-utils
        - device-mapper-persistent-data
        - lvm2
+       - python-pip
 
     - name: Set up the stable repository
       command: yum-config-manager --add-repo {{ docker_stable_repository }}
@@ -29,3 +30,7 @@
 
     - name: Apply executable permissions to the binary
       command: chmod +x /usr/local/bin/docker-compose
+
+    - name: Install docker-py
+      pip:
+        name: docker-py

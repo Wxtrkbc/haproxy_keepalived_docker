@@ -1,0 +1,37 @@
+global_defs {
+  default_interface eth0
+}
+
+
+vrrp_script chk_haproxy {
+    script "killall -0 haproxy"
+    interval 2
+}
+
+vrrp_instance VI_1 {
+  interface eth0
+
+  track_interface {
+    eth0
+  }
+
+  state BACKUP
+  virtual_router_id 51
+  priority 100
+  nopreempt
+
+
+  virtual_ipaddress {
+    140.143.152.176
+  }
+
+  authentication {
+    auth_type PASS
+    auth_pass wxtrkbc7788
+  }
+
+  track_script {
+    chk_haproxy
+  }
+
+}

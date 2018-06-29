@@ -1,7 +1,32 @@
 ---
 
-  - name: Get haproxy and keepalived images
+  - name: Pull haproxy and keepalived images
     docker_image:
-      src: docker-compose.yml.j2
-      dest: "{{ app_docker_compose_dir }}/docker-compose.yml"
+      name: "{{ item }}"
+    with_items:
+      - haproxy
+      - osixia/keepalived
+
+  - name: Create config dir if it doesn't exist
+    file:
+      path: "{{ ha_config_dir }}"
+      state: directory
+
+  - name: Config haproxy config
+    template:
+      src: haproxy.cfg.j2
+      dest: "{{ ha_config_dir }}/haproxy.cfg"
+
+
+  - name: Generate ha config
+    template:
+      src: ha-docker-compose.yml.j2
+      dest: "{{ ha_config_dir }}/docker-compose.yml"
+
+  - name: Start ha container
+    command: docker-compose up -d
+    args:
+      chdir: "{{ ha_config_dir }}"
+
+
 
