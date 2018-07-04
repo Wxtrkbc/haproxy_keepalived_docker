@@ -1,0 +1,34 @@
+---
+# tasks file for sentry
+
+  - name: Create config dir if it doesn't exist
+    file:
+      path: "{{ SENTRY_CONFIG_DIR }}"
+      state: directory
+
+  - name: Generate sentry secret key
+    command: docker run --rm sentry config generate-secret-key
+    args:
+      chdir: "{{ SENTRY_CONFIG_DIR }}"
+    register: sentry_key
+
+  - name: Generate sentry docker-compose file
+    template:
+      src: sentry-docker-compose.yml.j2
+      dest: "{{ SENTRY_CONFIG_DIR }}/docker-compose.yml"
+
+  - name: Start up sentry container
+    command: docker-compose up -d
+    args:
+      chdir: "{{ SENTRY_CONFIG_DIR }}"
+
+  - name: Setup database and create admin user
+    command: docker-compose exec sentry sentry upgrade
+    args:
+      chdir: "{{ SENTRY_CONFIG_DIR }}"
+
+
+  - name: Restart sentry
+    command: docker-compose restart
+    args:
+      chdir: "{{ SENTRY_CONFIG_DIR }}"

@@ -1,0 +1,15 @@
+---
+# defaults file for sentry
+
+  SENTRY_CONFIG_DIR: /etc/sentry
+
+  SENTRY_SECRET_KEY: "{{ sentry_key.stdout }}"
+
+  POSTGRES_USER: sentry
+  POSTGRES_PASSWORD: sentry
+  POSTGRES_DBNAME: sentry
+  POSTGRES_DBUSER: sentry
+  POSTGRES_DBPASS: sentry
+
+  SENTRY_DB_USER: sentry
+  SENTRY_DB_PASSWORD: sentry

@@ -1,0 +1,66 @@
+version: '3.3'
+
+services:
+
+  redis:
+    image: redis:latest
+    container_name: sentry_redis
+
+  postgres:
+    restart: always
+    image: postgres:latest
+    container_name: sentry_postgres
+    environment:
+      POSTGRES_USER: {{ POSTGRES_USER }}
+      POSTGRES_PASSWORD: {{ POSTGRES_PASSWORD }}
+      POSTGRES_DBNAME: {{ POSTGRES_DBNAME }}
+      POSTGRES_DBUSER: {{ POSTGRES_DBUSER }}
+      POSTGRES_DBPASS: {{ POSTGRES_DBPASS }}
+    volumes:
+      - type: volume
+        source: sentry_data
+        target: /pg_sentry_data
+
+  sentry:
+    image: sentry:latest
+    ports:
+     - 9000:9000
+    container_name: sentry
+#    command: "sentry upgrade"
+    environment: &environment
+      SENTRY_SECRET_KEY: {{ SENTRY_SECRET_KEY }}
+      SENTRY_POSTGRES_HOST: postgres
+      SENTRY_DB_USER: {{ SENTRY_DB_USER }}
+      SENTRY_DB_PASSWORD: {{ SENTRY_DB_PASSWORD }}
+      SENTRY_REDIS_HOST: redis
+    depends_on:
+      - postgres
+      - redis
+
+  cron:
+    image: sentry:latest
+    command: "sentry run cron"
+    container_name: sentry_cron
+    environment:
+      <<: *environment
+    depends_on:
+      - postgres
+      - redis
+
+
+  worker:
+    image: sentry:latest
+    container_name: sentry_worker
+    command: "sentry run worker"
+    environment:
+      <<: *environment
+    depends_on:
+      - postgres
+      - redis
+
+
+volumes:
+  sentry_data:
+
+
+
